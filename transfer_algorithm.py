@@ -164,7 +164,7 @@ def _findrowmin(X, B, V, wi):
         for i in range(0, q):
             matrix2[0][i] = X[wi][i] - matrix1[j][i]
         data = _weightednorm(matrix2)
-        if i == 0:
+        if j == 0:
             min = data
         elif min > data:
             flag = j
@@ -182,7 +182,7 @@ def _findcolumnmin(X, B, U, wi):
         for i in range(0, p):
             matrix2[i][0] = X[i][wi] - matrix1[i][j]
         data = _weightednorm(matrix2)
-        if i == 0:
+        if j == 0:
             min = data
         elif min > data:
             flag = j
@@ -237,12 +237,10 @@ def codebooktransfer(X, B):
     V = _init_binary(q, l)
     U = _matrix_init(p, k)
     #10 iterative rounds
-    for t in range(0, 10):
+    for t in range(0, 20):
         for i in range(0, p):
             pi = _findrowmin(X, B, V, i)
-            print pi
             U = _target(U, i, pi)
-            print U
         for j in range(0, q):
             pj = _findcolumnmin(X, B, U, j)
             V = _target(V, j, pj)
