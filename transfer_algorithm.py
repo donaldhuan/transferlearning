@@ -1,5 +1,5 @@
 '''Here what I want to do is to realize the algorithm of the 
-transfer learning which the cross-domain collaborative filtering
+transfer learning which was designed for the cross-domain collaborative filtering
 for sparsity reduction'''
 
 from random import *
