@@ -158,13 +158,15 @@ def _findrowmin(X, B, V, wi):
     k = len(B)
     matrix1 = _multiplication(B, _transpose(V))
     matrix2 = _matrix_init(1, q)
-    flag = -1
-    min = -1 
+    flag = 0 
+    min = 0
     for j in range(0, k):
         for i in range(0, q):
             matrix2[0][i] = X[wi][i] - matrix1[j][i]
         data = _weightednorm(matrix2)
-        if min > data:
+        if i == 0:
+            min = data
+        elif min > data:
             flag = j
             min = data
     return flag
@@ -172,15 +174,17 @@ def _findrowmin(X, B, V, wi):
 def _findcolumnmin(X, B, U, wi):
     p = len(X)
     l = len(B[0])
-    matrix1 = _multiplication(_transpose(U), B)
+    matrix1 = _multiplication(U, B)
     matrix2 = _matrix_init(p, 1)
-    flag = -1
-    min = -1
+    flag = 0
+    min = 0
     for j in range(0, l):
         for i in range(0, p):
             matrix2[i][0] = X[i][wi] - matrix1[i][j]
         data = _weightednorm(matrix2)
-        if data > min:
+        if i == 0:
+            min = data
+        elif min > data:
             flag = j
             min = data
     return flag
@@ -217,6 +221,7 @@ def _targetmatrix(X, W, U, V, B):
     p = len(X)
     q = len(X[0])
     matrix = _multiplication(_multiplication(U, B), _transpose(V))
+    print matrix
     for i in range(0, p):
         for j in range(0, q):
             if W[i][j] == 0:
@@ -230,14 +235,19 @@ def codebooktransfer(X, B):
     k = len(B)
     l = len(B[0])
     V = _init_binary(q, l)
-    #20 iterative rounds
-    for t in range(0, 20):
+    U = _matrix_init(p, k)
+    #10 iterative rounds
+    for t in range(0, 10):
         for i in range(0, p):
             pi = _findrowmin(X, B, V, i)
+            print pi
             U = _target(U, i, pi)
+            print U
         for j in range(0, q):
             pj = _findcolumnmin(X, B, U, j)
             V = _target(V, j, pj)
+    print U
+    print V
     W = _weightingmatrix(X)
     X = _targetmatrix(X, W, U, V, B)
     return X
