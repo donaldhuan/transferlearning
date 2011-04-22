@@ -52,7 +52,7 @@ def _gettarmatrix():
     
 def transfer(intensity):
     matrix = _getauxmatrix(intensity)
-    codebook = codebookconstruction(matrix, len(matrix), len(matrix[0]))
+    codebook = codebookconstruction(matrix, len(matrix)/2, len(matrix[0])/2)
     res = codebooktransfer(_gettarmatrix(), codebook)
     return res
 
